@@ -22,7 +22,9 @@ func main() {
     var l = len(result.Reservations)
     for i := 0; i < l; i++ {
       var inst = result.Reservations[i]
-      fmt.Println(aws.StringValue(inst.Instances[0].Tags[0].Value))
+      var instId = inst.Instances[0].InstanceId
+      var instName = aws.StringValue(inst.Instances[0].Tags[0].Value)
+      fmt.Printf("Instance name %s, ID %d\n", instName, instId)
     }
   }
 }
