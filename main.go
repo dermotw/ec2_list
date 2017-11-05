@@ -8,6 +8,10 @@ import (
 )
 
 func main() {
+  // Print the first line
+  fmt.Println( "EC2go" )
+  fmt.Println( "---" )
+
   // Load the session
   sess := session.Must(session.NewSessionWithOptions( session.Options{
     SharedConfigState: session.SharedConfigEnable,
@@ -22,9 +26,23 @@ func main() {
     var l = len(result.Reservations)
     for i := 0; i < l; i++ {
       var inst = result.Reservations[i]
-      var instId = inst.Instances[0].InstanceId
+      var instId = aws.StringValue(inst.Instances[0].InstanceId)
       var instName = aws.StringValue(inst.Instances[0].Tags[0].Value)
-      fmt.Printf("Instance name %s, ID %d\n", instName, instId)
+      var instState = aws.StringValue(inst.Instances[0].State.Name)
+
+      var color string
+
+      fmt.Printf("%s", instName)
+
+      if instState == "running" {
+        color = "green"
+        fmt.Printf( " | color=%s\n", color )
+        fmt.Printf( "-- Stop Instance | bash=/home/dermot/bin/stop_aws param1=%s terminal=false\n", instId )
+      } else {
+        color = "red"
+        fmt.Printf( " | color=%s\n", color )
+        fmt.Printf( "-- Start Instance | bash=/home/dermot/bin/start_aws param1=%s terminal=false\n", instId )
+      }
     }
   }
 }
