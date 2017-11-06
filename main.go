@@ -29,6 +29,7 @@ func main() {
       var instId = aws.StringValue(inst.Instances[0].InstanceId)
       var instName = aws.StringValue(inst.Instances[0].Tags[0].Value)
       var instState = aws.StringValue(inst.Instances[0].State.Name)
+      var netIfs = inst.Instances[0].NetworkInterfaces
 
       var color string
 
@@ -42,6 +43,21 @@ func main() {
         color = "red"
         fmt.Printf( " | color=%s\n", color )
         fmt.Printf( "-- Start Instance | bash=/home/dermot/bin/start_aws param1=%s terminal=false\n", instId )
+      }
+
+      fmt.Printf( "-- State: %s\n", instState )
+
+      // iterate over network interfaces
+      for j := 0; j < len( netIfs ); j++ {
+        fmt.Printf( "-- IP: %s", aws.StringValue(netIfs[j].PrivateIpAddress) )
+        Assoc := netIfs[j].Association
+        if Assoc != nil {
+          var PublicIp = aws.StringValue(Assoc.PublicIp)
+          fmt.Printf( ", %s", PublicIp)
+        } else {
+          // do nothing
+        }
+        fmt.Printf("\n")
       }
     }
   }
