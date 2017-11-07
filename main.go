@@ -38,11 +38,11 @@ func main() {
       if instState == "running" {
         color = "green"
         fmt.Printf( " | color=%s\n", color )
-        fmt.Printf( "-- Stop Instance | bash=/home/dermot/bin/stop_aws param1=%s terminal=false\n", instId )
+        fmt.Printf( "-- Stop Instance | bash=ec2_control param1=stop param2=%s terminal=false\n", instId )
       } else {
         color = "red"
         fmt.Printf( " | color=%s\n", color )
-        fmt.Printf( "-- Start Instance | bash=/home/dermot/bin/start_aws param1=%s terminal=false\n", instId )
+        fmt.Printf( "-- Start Instance | bash=ec2_control param1=start param2=%s terminal=false\n", instId )
       }
 
       fmt.Printf( "-- State: %s\n", instState )
